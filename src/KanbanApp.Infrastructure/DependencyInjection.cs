@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using KanbanApp.Application.Interfaces;
+using KanbanApp.Infrastructure.Services;
 
 namespace KanbanApp.Infrastructure;
 
@@ -23,6 +25,7 @@ public static class DependencyInjection
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+            services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }
