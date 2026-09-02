@@ -25,7 +25,7 @@ public class AuthController : ControllerBase
         var existingUser = await _userManager.FindByEmailAsync(dto.Email);
         if (existingUser is not null)
         {
-            return BadRequest(new { message = "هذا البريد الإلكتروني مستخدم بالفعل" });
+            return BadRequest(new { message = " The email is already exists" });
         }
 
         var user = new ApplicationUser
@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(e => e.Description);
-            return BadRequest(new { message = "فشل إنشاء الحساب", errors });
+            return BadRequest(new { message = "Failed create account  ", errors });
         }
 
         var token = _tokenService.CreateToken(user);
@@ -62,13 +62,13 @@ public class AuthController : ControllerBase
         var user = await _userManager.FindByEmailAsync(dto.Email);
         if (user is null)
         {
-            return Unauthorized(new { message = "البريد الإلكتروني أو كلمة المرور غير صحيحة" });
+            return Unauthorized(new { message = "The email or the password don't true" });
         }
 
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
         if (!isPasswordValid)
         {
-            return Unauthorized(new { message = "البريد الإلكتروني أو كلمة المرور غير صحيحة" });
+            return Unauthorized(new { message = "The email or the password don't true" });
         }
 
         var token = _tokenService.CreateToken(user);

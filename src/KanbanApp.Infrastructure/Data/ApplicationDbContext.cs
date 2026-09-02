@@ -17,7 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder); // ضروري لتهيئة جداول ال identity
+        base.OnModelCreating(builder); 
         builder.Entity<Project>(entity =>
         {
             entity.Property(p => p.Name).IsRequired().HasMaxLength(150);
@@ -26,12 +26,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(p => p.Owner)
                   .WithMany(u => u.OwnedProjects)
                   .HasForeignKey(p => p.OwnerId)
-                  .OnDelete(DeleteBehavior.Restrict); // لا نحذف المستخدم تلقائياً لو ملك مشاريع
+                  .OnDelete(DeleteBehavior.Restrict); 
         });
 
         builder.Entity<ProjectMember>(entity =>
         {
-            // يمنع تكرار عضوية نفس المستخدم في نفس المشروع مرتين
             entity.HasIndex(pm => new { pm.ProjectId, pm.UserId }).IsUnique();
 
             entity.HasOne(pm => pm.Project)
@@ -53,12 +52,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             entity.HasOne(t => t.Project)
                   .WithMany(p => p.Tasks)
                   .HasForeignKey(t => t.ProjectId)
-                  .OnDelete(DeleteBehavior.Cascade); // حذف المشروع يحذف مهامه
+                  .OnDelete(DeleteBehavior.Cascade); 
 
             entity.HasOne(t => t.AssignedUser)
                   .WithMany(u => u.AssignedTasks)
                   .HasForeignKey(t => t.AssignedUserId)
-                  .OnDelete(DeleteBehavior.SetNull); // حذف المستخدم لا يحذف المهمة، فقط يفرغ الإسناد
+                  .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

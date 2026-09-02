@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "أدخل التوكن بصيغة: Bearer {token}"
+        Description = "  Insert the token only:"
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -73,7 +73,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

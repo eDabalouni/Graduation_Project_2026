@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using KanbanApp.Application.Interfaces;
 using KanbanApp.Infrastructure.Services;
 
+
 namespace KanbanApp.Infrastructure;
 
 public static class DependencyInjection
@@ -26,7 +27,8 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITaskService, TaskService>();
         return services;
     }
 }
