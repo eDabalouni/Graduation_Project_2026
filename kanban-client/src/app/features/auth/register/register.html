@@ -1,0 +1,46 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title>إنشاء حساب جديد</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>الاسم الكامل</mat-label>
+          <input matInput type="text" name="fullName" [(ngModel)]="registerData.fullName" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>البريد الإلكتروني</mat-label>
+          <input matInput type="email" name="email" [(ngModel)]="registerData.email" required email />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>كلمة المرور</mat-label>
+          <input matInput type="password" name="password" [(ngModel)]="registerData.password" required minlength="8" />
+        </mat-form-field>
+
+        @if (errorMessages().length > 0) {
+          <ul class="error-list">
+            @for (msg of errorMessages(); track msg) {
+              <li>{{ msg }}</li>
+            }
+          </ul>
+        }
+
+        <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="!registerForm.valid || isLoading()">
+          @if (isLoading()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            إنشاء الحساب
+          }
+        </button>
+      </form>
+
+      <p class="switch-link">
+        لديك حساب بالفعل؟ <a routerLink="/login">سجّل الدخول</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,69 @@
+<div class="page-container">
+  <header class="page-header">
+    <h1>مشاريعي</h1>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="toggleCreateForm()">
+        <mat-icon>add</mat-icon>
+        مشروع جديد
+      </button>
+      <button mat-stroked-button (click)="logout()">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  @if (showCreateForm()) {
+    <mat-card class="create-form-card">
+      <mat-card-content>
+        <form (ngSubmit)="onCreateProject()" #createForm="ngForm">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>اسم المشروع</mat-label>
+            <input matInput name="name" [(ngModel)]="newProject.name" required />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>الوصف (اختياري)</mat-label>
+            <textarea matInput name="description" [(ngModel)]="newProject.description" rows="2"></textarea>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!createForm.valid || isCreating()">
+              @if (isCreating()) {
+                <mat-spinner diameter="20"></mat-spinner>
+              } @else {
+                إنشاء
+              }
+            </button>
+            <button mat-button type="button" (click)="toggleCreateForm()">إلغاء</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  } @else if (projects().length === 0) {
+    <p class="empty-message">لا توجد مشاريع بعد. أنشئ أول مشروع لك!</p>
+  } @else {
+    <div class="projects-grid">
+      @for (project of projects(); track project.id) {
+        <mat-card class="project-card" (click)="openProject(project.id)">
+          <mat-card-header>
+            <mat-card-title>{{ project.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="project-description">{{ project.description || 'لا يوجد وصف' }}</p>
+            <div class="project-stats">
+              <span>👤 {{ project.ownerName }}</span>
+              <span>👥 {{ project.membersCount }}</span>
+              <span>📋 {{ project.tasksCount }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</div>
