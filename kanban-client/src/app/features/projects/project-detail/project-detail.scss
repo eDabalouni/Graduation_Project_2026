@@ -1,0 +1,47 @@
+.page-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+.error-message {
+  color: #d32f2f;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.project-description {
+  color: #616161;
+  margin: 4px 0 0;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.placeholder-text {
+  color: #9e9e9e;
+  text-align: center;
+  padding: 32px;
+}
+
+.add-member-form {
+  margin-top: 16px;
+}
+
+.full-width {
+  width: 100%;
+}

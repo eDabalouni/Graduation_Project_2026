@@ -1,0 +1,67 @@
+<div class="page-container">
+  @if (isLoading()) {
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      رجوع للمشاريع
+    </button>
+  } @else if (project(); as p) {
+    <header class="page-header">
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1>{{ p.name }}</h1>
+        <p class="project-description">{{ p.description || 'لا يوجد وصف' }}</p>
+      </div>
+    </header>
+
+    <div class="content-grid">
+       <app-task-board [projectId]="projectId" [members]="members()"></app-task-board>
+      <mat-card class="members-card">
+        <mat-card-header>
+          <mat-card-title>الأعضاء ({{ members().length }})</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <mat-chip-set>
+            @for (member of members(); track member.userId) {
+              <mat-chip [removable]="isOwner() && member.role !== 'Owner'"
+                        (removed)="onRemoveMember(member.userId)">
+                {{ member.fullName }} ({{ member.role === 'Owner' ? 'مالك' : 'عضو' }})
+                @if (isOwner() && member.role !== 'Owner') {
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                }
+              </mat-chip>
+            }
+          </mat-chip-set>
+
+          @if (isOwner()) {
+            <form (ngSubmit)="onAddMember()" #memberForm="ngForm" class="add-member-form">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>بريد العضو الجديد</mat-label>
+                <input matInput type="email" name="email" [(ngModel)]="newMemberEmail" required email />
+              </mat-form-field>
+
+              @if (addMemberError()) {
+                <p class="error-message">{{ addMemberError() }}</p>
+              }
+
+              <button mat-raised-button color="primary" type="submit" [disabled]="!memberForm.valid || isAddingMember()">
+                @if (isAddingMember()) {
+                  <mat-spinner diameter="20"></mat-spinner>
+                } @else {
+                  إضافة عضو
+                }
+              </button>
+            </form>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

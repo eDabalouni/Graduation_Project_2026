@@ -1,0 +1,138 @@
+<div class="board-header">
+  <button mat-raised-button color="primary" (click)="toggleCreateForm()">
+    <mat-icon>add</mat-icon>
+    مهمة جديدة
+  </button>
+</div>
+
+@if (showCreateForm()) {
+  <mat-card class="create-task-card">
+    <mat-card-content>
+      <form (ngSubmit)="onCreateTask()" #taskForm="ngForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>عنوان المهمة</mat-label>
+          <input matInput name="title" [(ngModel)]="newTask.title" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>الوصف (اختياري)</mat-label>
+          <textarea matInput name="description" [(ngModel)]="newTask.description" rows="2"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>الأولوية</mat-label>
+          <mat-select name="priority" [(ngModel)]="newTask.priority">
+            <mat-option value="Low">منخفضة</mat-option>
+            <mat-option value="Medium">متوسطة</mat-option>
+            <mat-option value="High">عالية</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        @if (members.length > 0) {
+          <mat-form-field appearance="outline">
+            <mat-label>إسناد إلى (اختياري)</mat-label>
+            <mat-select name="assignedUserId" [(ngModel)]="newTask.assignedUserId">
+              <mat-option [value]="null">بدون إسناد</mat-option>
+              @for (member of members; track member.userId) {
+                <mat-option [value]="member.userId">{{ member.fullName }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid || isCreating()">
+            إنشاء
+          </button>
+          <button mat-button type="button" (click)="toggleCreateForm()">إلغاء</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
+
+<div class="kanban-board" cdkDropListGroup>
+  <div class="kanban-column">
+    <h3>قيد الانتظار ({{ todoTasks().length }})</h3>
+    <div
+      class="task-list"
+      id="todo-list"
+      cdkDropList
+      [cdkDropListData]="todoTasks()"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (task of todoTasks(); track task.id) {
+        <mat-card class="task-card" cdkDrag>
+          <mat-card-content>
+            <p class="task-title">{{ task.title }}</p>
+            <div class="task-meta">
+              <mat-chip [class]="'priority-' + task.priority">{{ task.priority }}</mat-chip>
+              @if (task.assignedUserName) {
+                <span class="assigned-to">👤 {{ task.assignedUserName }}</span>
+              }
+            </div>
+            <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+
+  <div class="kanban-column">
+    <h3>قيد التنفيذ ({{ inProgressTasks().length }})</h3>
+    <div
+      class="task-list"
+      id="in-progress-list"
+      cdkDropList
+      [cdkDropListData]="inProgressTasks()"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (task of inProgressTasks(); track task.id) {
+        <mat-card class="task-card" cdkDrag>
+          <mat-card-content>
+            <p class="task-title">{{ task.title }}</p>
+            <div class="task-meta">
+              <mat-chip [class]="'priority-' + task.priority">{{ task.priority }}</mat-chip>
+              @if (task.assignedUserName) {
+                <span class="assigned-to">👤 {{ task.assignedUserName }}</span>
+              }
+            </div>
+            <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+
+  <div class="kanban-column">
+    <h3>مكتملة ({{ doneTasks().length }})</h3>
+    <div
+      class="task-list"
+      id="done-list"
+      cdkDropList
+      [cdkDropListData]="doneTasks()"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (task of doneTasks(); track task.id) {
+        <mat-card class="task-card" cdkDrag>
+          <mat-card-content>
+            <p class="task-title">{{ task.title }}</p>
+            <div class="task-meta">
+              <mat-chip [class]="'priority-' + task.priority">{{ task.priority }}</mat-chip>
+              @if (task.assignedUserName) {
+                <span class="assigned-to">👤 {{ task.assignedUserName }}</span>
+              }
+            </div>
+            <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</div>

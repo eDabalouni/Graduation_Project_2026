@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { ProjectDto, ProjectCreateDto, ProjectUpdateDto } from '../../models/project.model';
+import { ProjectDto, ProjectCreateDto, ProjectUpdateDto,ProjectMemberDto, AddProjectMemberDto } from '../../models/project.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +31,16 @@ export class ProjectService {
   deleteProject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getMembers(projectId: number): Observable<ProjectMemberDto[]> {
+    return this.http.get<ProjectMemberDto[]>(`${this.apiUrl}/${projectId}/members`);
+}
+
+addMember(projectId: number, dto: AddProjectMemberDto): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${projectId}/members`, dto);
+}
+
+removeMember(projectId: number, memberUserId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}/members/${memberUserId}`);
+}
 }

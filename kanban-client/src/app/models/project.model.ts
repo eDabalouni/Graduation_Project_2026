@@ -18,3 +18,15 @@ export interface ProjectUpdateDto {
   name: string;
   description?: string;
 }
+
+export interface ProjectMemberDto {
+  userId: string;
+  email: string;
+  fullName: string;
+  role: string;
+  joinedAt: string;
+}
+
+export interface AddProjectMemberDto {
+  email: string;
+}
