@@ -22,3 +22,11 @@ export interface TaskCreateDto {
 export interface TaskStatusUpdateDto {
   status: string;
 }
+
+export interface TaskUpdateDto {
+  title: string;
+  description?: string;
+  priority: string;
+  dueDate?: string | null;
+  assignedUserId?: string | null;
+}

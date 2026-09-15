@@ -1,0 +1,29 @@
+// ===== الألوان الأساسية =====
+$ink: #1C1B18;              // نص أساسي (حبر داكن دافئ)
+$kraft-bg: #F7F3EB;         // خلفية الصفحات (ورق كرافت)
+$card-bg: #FFFFFF;
+$card-border: #E8E2D4;
+$muted-text: #8A8477;
+$divider: #C7C1B0;
+
+// ===== ألوان الحالة (بطابع أختام الطباعة) =====
+$status-todo: #C4622D;
+$status-todo-bg: #FBE9E0;
+
+$status-progress: #2D6A8C;
+$status-progress-bg: #E4EFF5;
+
+$status-done: #4A7A3D;
+$status-done-bg: #E9F1E5;
+
+$status-medium: #6B6552;
+$status-medium-bg: #EFEBDF;
+
+// ===== الخطوط =====
+$font-display: 'Space Grotesk', sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+// ===== قياسات موحدة =====
+$radius-card: 6px;
+$radius-container: 8px;
+$border-thin: 0.5px solid $card-border;

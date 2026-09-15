@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Edit Task </h2>
+
+<mat-dialog-content>
+  <form #editForm="ngForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label> Task Title </mat-label>
+      <input matInput name="title" [(ngModel)]="formData.title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput name="description" [(ngModel)]="formData.description" rows="3"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Priority</mat-label>
+      <mat-select name="priority" [(ngModel)]="formData.priority">
+        <mat-option value="Low">Low</mat-option>
+        <mat-option value="Medium">Medium</mat-option>
+        <mat-option value="High">High</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Assign To  </mat-label>
+      <mat-select name="assignedUserId" [(ngModel)]="formData.assignedUserId">
+        <mat-option [value]="null">With out Assignment </mat-option>
+        @for (member of members; track member.userId) {
+          <mat-option [value]="member.userId">{{ member.fullName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    @if (errorMessage()) {
+      <p class="error-message">{{ errorMessage() }}</p>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!editForm.valid || isSaving()">
+    @if (isSaving()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Save
+    }
+  </button>
+</mat-dialog-actions>

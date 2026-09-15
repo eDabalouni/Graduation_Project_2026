@@ -19,6 +19,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { TaskService } from '../../../core/services/task.service';
 import { TaskDto, TaskCreateDto } from '../../../models/task.model';
 import { ProjectMemberDto } from '../../../models/project.model';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskEditDialogComponent } from '../task-edit-dialog/task-edit-dialog';
 
 @Component({
   selector: 'app-task-board',
@@ -54,7 +56,12 @@ export class TaskBoardComponent implements OnInit, OnChanges {
   newTask: TaskCreateDto = { title: '', priority: 'Medium' };
   isCreating = signal(false);
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,
+    private dialog: MatDialog
+
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.loadTasks();
@@ -97,6 +104,19 @@ export class TaskBoardComponent implements OnInit, OnChanges {
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
         this.allTasks.update(list => list.filter(t => t.id !== taskId));
+      }
+    });
+  }
+
+  onEditTask(task: TaskDto): void {
+    const dialogRef = this.dialog.open(TaskEditDialogComponent, {
+      width: '450px',
+      data: { task, members: this.members }
+    });
+
+    dialogRef.afterClosed().subscribe((saved: boolean) => {
+      if (saved) {
+        this.loadTasks();
       }
     });
   }

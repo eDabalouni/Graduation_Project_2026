@@ -1,13 +1,13 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>تسجيل الدخول</mat-card-title>
+      <mat-card-title>Login </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>البريد الإلكتروني</mat-label>
+          <mat-label>Email </mat-label>
           <input
             matInput
             type="email"
@@ -19,7 +19,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>كلمة المرور</mat-label>
+          <mat-label>Password </mat-label>
           <input
             matInput
             type="password"
@@ -44,13 +44,13 @@
           @if (isLoading()) {
             <mat-spinner diameter="20"></mat-spinner>
           } @else {
-            دخول
+            Login
           }
         </button>
       </form>
 
       <p class="switch-link">
-        ليس لديك حساب؟ <a routerLink="/register">أنشئ حساباً جديداً</a>
+          Didn't have email? <a routerLink="/register">Create new account  </a>
       </p>
     </mat-card-content>
   </mat-card>
